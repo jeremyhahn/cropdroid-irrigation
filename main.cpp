@@ -5,7 +5,7 @@
 #include "DallasTemperature.h"
 #include "EEPROM.h"
 
-#define DEBUG 1
+#define DEBUG 0
 #define EEPROM_DEBUG 1
 #define BUFSIZE 255
 #define CHANNEL_SIZE 7
@@ -17,14 +17,14 @@
 #define MOISTURE3_PIN A4
 #define MOISTURE4_PIN A5
 #define MOISTURE5_PIN A6
-#define DHT_PIN0 A7
+#define DHT_PIN0 9
 
 extern int  __bss_end;
 extern int  *__brkval;
 
 const int NULL_CHANNEL = 255;
 const int channels[CHANNEL_SIZE] = {
-	2, 3, 4, 5, 6, 7, 8
+	8, 2, 3, 4, 5, 6, 7
 };
 unsigned long channel_table[CHANNEL_SIZE][3] = {
 	// channel, start, interval
@@ -42,7 +42,7 @@ const char json_bracket_close[] = "}";
 const char json_array_bracket_close[] = "]";
 const char json_comma[] = ",";
 
-const char string_initializing[] PROGMEM = "Initializing room...";
+const char string_initializing[] PROGMEM = "Initializing irrigation...";
 const char string_dhcp_failed[] PROGMEM = "DHCP Failed";
 const char string_http_200[] PROGMEM = "HTTP/1.1 200 OK";
 const char string_http_404[] PROGMEM = "HTTP/1.1 404 Not Found";
@@ -225,6 +225,13 @@ void setup(void) {
 	pinMode(channels[i], OUTPUT);
 	digitalWrite(channels[i], LOW);
   }
+  pinMode(FLOW0_PIN, INPUT_PULLUP);
+  pinMode(MOISTURE0_PIN, INPUT_PULLUP);
+  pinMode(MOISTURE1_PIN, INPUT_PULLUP);
+  pinMode(MOISTURE2_PIN, INPUT_PULLUP);
+  pinMode(MOISTURE3_PIN, INPUT_PULLUP);
+  pinMode(MOISTURE4_PIN, INPUT_PULLUP);
+  pinMode(MOISTURE5_PIN, INPUT_PULLUP);
 
   byte macByte1 = EEPROM.read(0);
 
@@ -350,17 +357,17 @@ void readMoistureLevels() {
   strcat(string_buffer, "%");
   Serial.println(string_buffer);
 
-  itoa(moisture3, float_buffer, 10);
-  strcpy(string_buffer, "moisture3:");
-  strcat(string_buffer, float_buffer);
-  strcat(string_buffer, "%");
-  Serial.println(string_buffer);
-
-  itoa(moisture4, float_buffer, 10);
-  strcpy(string_buffer, "moisture4:");
-  strcat(string_buffer, float_buffer);
-  strcat(string_buffer, "%");
-  Serial.println(string_buffer);
+//  itoa(moisture3, float_buffer, 10);
+//  strcpy(string_buffer, "moisture3:");
+//  strcat(string_buffer, float_buffer);
+//  strcat(string_buffer, "%");
+//  Serial.println(string_buffer);
+//
+//  itoa(moisture4, float_buffer, 10);
+//  strcpy(string_buffer, "moisture4:");
+//  strcat(string_buffer, float_buffer);
+//  strcat(string_buffer, "%");
+//  Serial.println(string_buffer);
 
   itoa(moisture5, float_buffer, 10);
   strcpy(string_buffer, "moisture5:");
